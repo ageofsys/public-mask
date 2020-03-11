@@ -108,9 +108,49 @@
         }
     </style>
 
+    <style>
+        #overlay{
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+            height:100%;
+            display: none;
+            background: rgba(0,0,0,0.6);
+        }
+        .cv-spinner {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px #ddd solid;
+            border-top: 4px #2e93e6 solid;
+            border-radius: 50%;
+            animation: sp-anime 0.8s infinite linear;
+        }
+        @keyframes sp-anime {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        .is-hide{
+            display:none;
+        }
+    </style>
+
     <script src="https://kit.fontawesome.com/7cec4e236d.js" crossorigin="anonymous"></script>
 </head>
 <body>
+
+<div id="overlay">
+    <div class="cv-spinner">
+        <span class="spinner"></span>
+    </div>
+</div>
 
 <div class="page-wrap">
 
@@ -263,8 +303,7 @@
 
 </div>
 
-
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -275,9 +314,13 @@
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
 <script>
 
-    loadProgressBar();
+    // loadProgressBar();
 
     $(document).ready(function () {
+
+        $(document).ajaxSend(function() {
+            $("#overlay").fadeIn(300);
+        });
 
         $("#search-address-btn").click(function () {
             var keyword = $("#search-address-keyword").val();
@@ -489,16 +532,16 @@
 
         markers = [];
 
-        axios.get('https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json', {
-            params: {
+        $.get( 'https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json',
+            {
                 lat: lat,
                 lng: lng,
                 m: distance
-            }
-        })
-            .then(function (response) {
+            })
+            .done(function( data ) {
+                var response = data;
 
-                stores = response.data.stores;
+                stores = response.stores;
 
                 for (var i = 0; i < stores.length; i++) {
                     var store = stores[i];
@@ -560,15 +603,94 @@
                     markers.push(marker);
 
                 }
-
-                // vm.$data.stores = stores;
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
-            .then(function () {
-                // always executed
+            }).fail(function() {
+                alert( "통신이 지연되고 있습니다. 잠시 후 다시 시도해주세요" );
+            }).always(function () {
+                setTimeout(function(){
+                    $("#overlay").fadeOut(300);
+                },500);
             });
+
+        // axios.get('https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json', {
+        //     params: {
+        //         lat: lat,
+        //         lng: lng,
+        //         m: distance
+        //     }
+        // })
+        //     .then(function (response) {
+        //
+        //         stores = response.data.stores;
+        //
+        //         for (var i = 0; i < stores.length; i++) {
+        //             var store = stores[i];
+        //             // console.log(store);
+        //
+        //             imageSrc = "/image/";
+        //
+        //             // 약국
+        //             if (store.type == "01") {
+        //                 imageSrc += "pharmacy_"
+        //             }
+        //             // 우체국
+        //             else if (store.type == "02") {
+        //                 imageSrc += "post_"
+        //             }
+        //             // 농협협
+        //             else if (store.type == "03"){
+        //                 imageSrc += "agricultural_"
+        //             }
+        //
+        //             if (store.remain_stat == "plenty" || store.remain_stat == "some"
+        //                 || store.remain_stat == "few" || store.remain_stat == "empty") {
+        //                 imageSrc += store.remain_stat + ".png";
+        //             } else {
+        //                 imageSrc += "empty.png";
+        //             }
+        //
+        //             // 마커 이미지의 이미지 크기 입니다
+        //             var imageSize = new kakao.maps.Size(24, 35);
+        //
+        //             // 마커 이미지를 생성합니다
+        //             var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+        //
+        //             // 마커를 생성합니다
+        //             var marker = new kakao.maps.Marker({
+        //                 map: map, // 마커를 표시할 지도
+        //                 position: new kakao.maps.LatLng(store.lat, store.lng), // 마커를 표시할 위치
+        //                 title: store.name, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        //                 image: markerImage, // 마커 이미지
+        //             });
+        //
+        //             marker.store = store;
+        //
+        //             var overlayContent = "<h1 id='overlay' style='width: 100px; height: 100px; outline: 1px solid red;'>" + store.name + "</h1>";
+        //
+        //             // 마커 위에 커스텀오버레이를 표시합니다
+        //             // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+        //             // var overlay = new kakao.maps.CustomOverlay({
+        //             //     content: overlayContent,
+        //             //     map: map,
+        //             //     position: marker.getPosition()
+        //             // });
+        //
+        //             // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+        //             kakao.maps.event.addListener(marker, 'click', function() {
+        //                 storeSaleInfoVm.$data.storeSale = this.store;
+        //             });
+        //
+        //             markers.push(marker);
+        //
+        //         }
+        //
+        //         // vm.$data.stores = stores;
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     })
+        //     .then(function () {
+        //         // always executed
+        //     });
 
     }
 
@@ -615,7 +737,10 @@
         });
     }
 
-    makeMarker(cmtinfoLatLng.getLat(), cmtinfoLatLng.getLng())
+    $(document).ready(function () {
+        makeMarker(cmtinfoLatLng.getLat(), cmtinfoLatLng.getLng())
+    });
+
 
 </script>
 </body>
