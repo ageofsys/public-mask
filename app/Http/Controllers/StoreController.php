@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Clients\SimpleClient;
-use App\Repositories\PublicMaskRepository;
+use App\PublicMask\Api\Clients\SimpleClient;
+use App\Repositories\PublicMaskApiRepository;
+use App\Store;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 
 class StoreController extends Controller
@@ -14,7 +16,7 @@ class StoreController extends Controller
      * StoreController constructor.
      * @param $publicMaskRepository
      */
-    public function __construct(PublicMaskRepository $publicMaskRepository)
+    public function __construct(PublicMaskApiRepository $publicMaskRepository)
     {
         $this->repository = $publicMaskRepository;
     }
@@ -26,12 +28,42 @@ class StoreController extends Controller
      */
     public function index(Request $request)
     {
-        $currentPage = $request->page ?: 1;
-        $storeResult = $this->repository->getStores(["page" => $currentPage]);
+        $keywords = collect(explode(" ", $request->keyword));
+        $keywords = $keywords->filter();
+
+
+        $parameters = $request->query->all();
+
+        $ascdesc = $request->asc ? "asc" : "desc";
+        $orderCoulmn = $request->order ?: null;
+
+        $query = Store::query();
+
+        if (isset($request->remain_stat) && in_array($request->remain_stat, ["plenty", "some", "few", "empty"])) {
+
+            $query->whereHas("sales", function ($query2) use ($request) {
+                $query2->where("remain_stat", "=", $request->remain_stat);
+            });
+
+        }
+
+        if ($orderCoulmn) {
+            $query->orderBy($request->order, $ascdesc);
+        }
+
+        if ( ! $keywords->isEmpty()) {
+            foreach ($keywords as $keyword) {
+                $query->where(function ($query2) use ($keyword) {
+                    $query2->orWhere("addr", "like", "%$keyword%");
+                });
+            }
+        }
+
+        $stores = $query->paginate(15);
 
         return view("store.index")->with([
-            "storeResult" => $storeResult,
-            "page" => $currentPage
+            "stores" => $stores,
+            "parameters" => $parameters
         ]);
     }
 

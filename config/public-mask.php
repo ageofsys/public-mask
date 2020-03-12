@@ -11,6 +11,8 @@ return [
         "stores_by_address" => "storesByAddr/json",
     ],
 
-    "daum_rest_api_key" => "6ba01de9b719679479a56cfda66ba062"
+    "daum_rest_api_key" => "6ba01de9b719679479a56cfda66ba062",
+
+
 
 ];

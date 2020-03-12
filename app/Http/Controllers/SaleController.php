@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\PublicMaskRepository;
+use App\Repositories\PublicMaskApiRepository;
 use Illuminate\Http\Request;
 
 class SaleController extends Controller
@@ -13,7 +13,7 @@ class SaleController extends Controller
      * SaleController constructor.
      * @param $repository
      */
-    public function __construct(PublicMaskRepository $repository)
+    public function __construct(PublicMaskApiRepository $repository)
     {
         $this->repository = $repository;
     }

@@ -4,11 +4,11 @@
 namespace App\Repositories;
 
 
-use App\Clients\SaleResult;
-use App\Clients\SimpleClient;
-use App\Clients\StoreResult;
+use App\PublicMask\Api\Clients\SimpleClient;
+use App\PublicMask\Api\Result\SaleResult;
+use App\PublicMask\Api\Result\StoreResult;
 
-class PublicMaskRepository
+class PublicMaskApiRepository
 {
     private $config;
 
@@ -42,12 +42,22 @@ class PublicMaskRepository
         return $perfectUrl;
     }
 
+    public function getRemoteStores($query = [])
+    {
+        return $this->client->get($this->apiUrl("stores") . "?" . http_build_query($query));
+    }
+
     public function getStores($query = [])
     {
         $storeResultJson
             = $this->client->get($this->apiUrl("stores") . "?" . http_build_query($query));
 
         return new StoreResult($storeResultJson);
+    }
+
+    public function getRemoteSales($query = [])
+    {
+        return $this->client->get($this->apiUrl("sales") . "?" . http_build_query($query));
     }
 
     public function getSales($query = [])

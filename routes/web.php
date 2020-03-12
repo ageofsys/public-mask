@@ -19,4 +19,8 @@ Route::resource("stores", "StoreController");
 
 Route::resource("sales", "SaleController");
 
-Route::resource("search", "SearchController");
+Route::get("search", "SearchController@index")->name("search.index");
+Route::get("search/stores", "SearchController@searchOnMap");
+
+Route::get("sync/stores", "SyncController@syncStores");
+Route::get("sync/sales", "SyncController@syncSales");

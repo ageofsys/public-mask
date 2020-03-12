@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>공공 마스크 현황</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fafafa">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
@@ -21,8 +24,14 @@
             color: #444;
         }
 
+        @media (min-width: 992px) {
+            body {
+                padding-left: 360px;
+                height: 100vh;
+            }
+        }
+
         body {
-            padding-left: 360px;
             height: 100vh;
         }
 
@@ -47,6 +56,19 @@
             display: none;
             border: 1px solid #ccc;
             width: 500px;
+            height: 300px;
+            overflow-y: hidden;
+            background-color: #fff;
+            z-index: 1;
+        }
+
+        .search-address-frame-mobile {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: none;
+            border: 1px solid #ccc;
+            width: 100%;
             height: 300px;
             overflow-y: hidden;
             background-color: #fff;
@@ -154,7 +176,7 @@
 
 <div class="page-wrap">
 
-    <div class="left-menu-wrap border-r shadow-lg">
+    <div class="left-menu-wrap border-r shadow-lg d-none d-lg-block d-xl-block">
 
         <div class="row" style="height: 100%">
             <div class="col" style="height: 100%">
@@ -230,10 +252,34 @@
             </div>
 
             <!-- 지도타입 컨트롤 div 입니다 -->
-            <div class="custom_typecontrol radius_border">
+            <div class="custom_typecontrol radius_border d-none d-lg-block d-xl-block">
                 <button type="button" class="btn btn-primary btn-sm shadow-lg" onclick="setMapType('roadmap')">지도</button>
                 <button type="button" class="btn btn-secondary btn-sm shadow-lg" onclick="setMapType('skyview')">스카이뷰</button>
             </div>
+
+            <div class="custom_typecontrol radius_border d-lg-none d-xl-none" style="left: 10px; background-color: #fff">
+                <div class="input-group">
+                    <input id="search-address-keyword-mobile" type="text" class="form-control" placeholder="주소를 검색하세요">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="search-address-btn-mobile"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="search-address-mobile" class="search-address-frame-mobile">
+                <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
+            </div>
+
+
+            <a class="btn btn-primary d-lg-none d-xl-none" href="{{ route("stores.index") }}" style="position: absolute; bottom: 10px; right: 10px; z-index: 1">표로 검색하기</a>
+
+            <ul class="list-disc list-inside text-gray-600" style="position: absolute; bottom: 10px; left: 10px; z-index: 1; font-size: 9px">
+                <li class="mb-2"><img class="inline" src="/image/pharmacy_plenty.png"> 100개 이상</li>
+                <li class="mb-2"><img class="inline" src="/image/pharmacy_some.png"> 30개 이상 100개 미만</li>
+                <li class="mb-2"><img class="inline" src="/image/pharmacy_few.png"> 2개 이상 30개 미만</li>
+                <li class="mb-2"><img class="inline" src="/image/pharmacy_empty.png"> 1개 이하</li>
+            </ul>
+
 
             {{--        <div id="store-list" class="store-list-frame">--}}
             {{--            <p class="no-result" v-if="stores.length == 0">--}}
@@ -248,7 +294,7 @@
             {{--            </ul>--}}
             {{--        </div>--}}
 
-            <div id="store-sale-info" class="store-sale-info-frame shadow-lg">
+            <div id="store-sale-info" class="store-sale-info-frame shadow-lg d-none d-lg-block d-xl-block">
                 <p class="no-result" v-if="storeSale.code == undefined">
                     <i class="fas fa-exclamation-triangle"></i> 판매처를 클릭하세요.
                 </p>
@@ -327,6 +373,11 @@
             searchAddress(keyword);
         })
 
+        $("#search-address-btn-mobile").click(function () {
+            var keyword = $("#search-address-keyword-mobile").val();
+            searchAddressMobile(keyword);
+        })
+
         $("#search-address-keyword").keypress(function (event) {
             if ( event.which == 13 ) {
                 searchAddress($(this).val());
@@ -339,10 +390,58 @@
 
     // 우편번호 찾기 찾기 화면을 넣을 element
     var element_wrap = document.getElementById('search-address');
+    var element_wrap_mobile = document.getElementById('search-address-mobile');
 
     function foldDaumPostcode() {
         // iframe을 넣은 element를 안보이게 한다.
         element_wrap.style.display = 'none';
+    }
+
+    function foldDaumPostcodeMobile() {
+        // iframe을 넣은 element를 안보이게 한다.
+        element_wrap_mobile.style.display = 'none';
+    }
+
+    function searchAddressMobile(keyword) {
+        new daum.Postcode({
+            oncomplete: function(data) {
+
+                resetCenterOfMapByAddress(map, data.roadAddress)
+
+                // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // iframe을 넣은 element를 안보이게 한다.
+                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+                element_wrap_mobile.style.display = 'none';
+
+                $("#search-address-keyword-mobile").val("")
+            },
+            // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
+            onresize : function(size) {
+                element_wrap_mobile.style.height = "500px";
+            },
+            width : '100%',
+            height : '500px'
+        }).embed(element_wrap_mobile, {
+            q: keyword
+        });
+
+        // iframe을 넣은 element를 보이게 한다.
+        element_wrap_mobile.style.display = 'block';
     }
 
     function searchAddress(keyword) {
@@ -432,6 +531,11 @@
     // 지도가 이동, 확대, 축소로 인해 중심좌표가 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
     kakao.maps.event.addListener(map, 'idle', function () {
 
+        var bounds = map.getBounds();
+        console.log("###################################");
+        console.log(bounds.toString());
+        console.log("###################################");
+
         // 지도의  레벨을 얻어옵니다
         var level = map.getLevel();
 
@@ -443,31 +547,7 @@
 
         // console.log(message);
 
-        makeMarker(latlng.getLat(), latlng.getLng())
-
-    });
-
-    // 지도가 이동, 확대, 축소로 인해 지도영역이 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
-    kakao.maps.event.addListener(map, 'bounds_changed', function () {
-
-        // // 지도의 중심좌표를 얻어옵니다
-        // var latlng = map.getCenter();
-        //
-        // // 지도 영역정보를 얻어옵니다
-        // var bounds = map.getBounds();
-        //
-        // // 영역정보의 남서쪽 정보를 얻어옵니다
-        // var swLatlng = bounds.getSouthWest();
-        //
-        // // 영역정보의 북동쪽 정보를 얻어옵니다
-        // var neLatlng = bounds.getNorthEast();
-        //
-        // var message = '<p>영역좌표는 남서쪽 위도, 경도는  ' + swLatlng.toString() + '이고 <br>';
-        // message += '북동쪽 위도, 경도는  ' + neLatlng.toString() + '입니다 </p>';
-        //
-        // console.log(message);
-        //
-        // makeMarker(latlng.getLat(), latlng.getLng())
+        makeMarker2()
 
     });
 
@@ -513,6 +593,186 @@
             }
         }
     });
+
+    function makeMarker2(lat, lng) {
+
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+
+        var bounds = map.getBounds();
+
+        // 영역정보의 남서쪽 정보를 얻어옵니다
+        var swLatlng = bounds.getSouthWest();
+
+        // 영역정보의 북동쪽 정보를 얻어옵니다
+        var neLatlng = bounds.getNorthEast();
+
+
+        markers = [];
+
+        $.get( '/search/stores',
+            {
+                sw_lat: swLatlng.getLat(),
+                sw_lng: swLatlng.getLng(),
+                ne_lat: neLatlng.getLat(),
+                ne_lng: neLatlng.getLng(),
+            })
+            .done(function( data ) {
+                var response = data;
+
+                stores = response.stores;
+
+                for (var i = 0; i < stores.length; i++) {
+                    var store = stores[i];
+                    // console.log(store);
+
+                    imageSrc = "/image/";
+
+                    // 약국
+                    if (store.type == "01") {
+                        imageSrc += "pharmacy_"
+                    }
+                    // 우체국
+                    else if (store.type == "02") {
+                        imageSrc += "post_"
+                    }
+                    // 농협협
+                    else if (store.type == "03"){
+                        imageSrc += "agricultural_"
+                    }
+
+                    if (store.remain_stat == "plenty" || store.remain_stat == "some"
+                        || store.remain_stat == "few" || store.remain_stat == "empty") {
+                        imageSrc += store.remain_stat + ".png";
+                    } else {
+                        imageSrc += "empty.png";
+                    }
+
+                    // 마커 이미지의 이미지 크기 입니다
+                    var imageSize = new kakao.maps.Size(24, 35);
+
+                    // 마커 이미지를 생성합니다
+                    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+                    // 마커를 생성합니다
+                    var marker = new kakao.maps.Marker({
+                        map: map, // 마커를 표시할 지도
+                        position: new kakao.maps.LatLng(store.lat, store.lng), // 마커를 표시할 위치
+                        title: store.name, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                        image: markerImage, // 마커 이미지
+                    });
+
+                    marker.store = store;
+
+                    var overlayContent = "<h1 id='overlay' style='width: 100px; height: 100px; outline: 1px solid red;'>" + store.name + "</h1>";
+
+                    // 마커 위에 커스텀오버레이를 표시합니다
+                    // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+                    // var overlay = new kakao.maps.CustomOverlay({
+                    //     content: overlayContent,
+                    //     map: map,
+                    //     position: marker.getPosition()
+                    // });
+
+                    // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+                    kakao.maps.event.addListener(marker, 'click', function() {
+                        storeSaleInfoVm.$data.storeSale = this.store;
+                    });
+
+                    markers.push(marker);
+
+                }
+            }).fail(function() {
+                alert( "통신이 지연되고 있습니다. 잠시 후 다시 시도해주세요" );
+            }).always(function () {
+                setTimeout(function(){
+                    $("#overlay").fadeOut(300);
+                },500);
+            });
+
+        // axios.get('https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json', {
+        //     params: {
+        //         lat: lat,
+        //         lng: lng,
+        //         m: distance
+        //     }
+        // })
+        //     .then(function (response) {
+        //
+        //         stores = response.data.stores;
+        //
+        //         for (var i = 0; i < stores.length; i++) {
+        //             var store = stores[i];
+        //             // console.log(store);
+        //
+        //             imageSrc = "/image/";
+        //
+        //             // 약국
+        //             if (store.type == "01") {
+        //                 imageSrc += "pharmacy_"
+        //             }
+        //             // 우체국
+        //             else if (store.type == "02") {
+        //                 imageSrc += "post_"
+        //             }
+        //             // 농협협
+        //             else if (store.type == "03"){
+        //                 imageSrc += "agricultural_"
+        //             }
+        //
+        //             if (store.remain_stat == "plenty" || store.remain_stat == "some"
+        //                 || store.remain_stat == "few" || store.remain_stat == "empty") {
+        //                 imageSrc += store.remain_stat + ".png";
+        //             } else {
+        //                 imageSrc += "empty.png";
+        //             }
+        //
+        //             // 마커 이미지의 이미지 크기 입니다
+        //             var imageSize = new kakao.maps.Size(24, 35);
+        //
+        //             // 마커 이미지를 생성합니다
+        //             var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+        //
+        //             // 마커를 생성합니다
+        //             var marker = new kakao.maps.Marker({
+        //                 map: map, // 마커를 표시할 지도
+        //                 position: new kakao.maps.LatLng(store.lat, store.lng), // 마커를 표시할 위치
+        //                 title: store.name, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        //                 image: markerImage, // 마커 이미지
+        //             });
+        //
+        //             marker.store = store;
+        //
+        //             var overlayContent = "<h1 id='overlay' style='width: 100px; height: 100px; outline: 1px solid red;'>" + store.name + "</h1>";
+        //
+        //             // 마커 위에 커스텀오버레이를 표시합니다
+        //             // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+        //             // var overlay = new kakao.maps.CustomOverlay({
+        //             //     content: overlayContent,
+        //             //     map: map,
+        //             //     position: marker.getPosition()
+        //             // });
+        //
+        //             // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+        //             kakao.maps.event.addListener(marker, 'click', function() {
+        //                 storeSaleInfoVm.$data.storeSale = this.store;
+        //             });
+        //
+        //             markers.push(marker);
+        //
+        //         }
+        //
+        //         // vm.$data.stores = stores;
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     })
+        //     .then(function () {
+        //         // always executed
+        //     });
+
+    }
 
     function makeMarker(lat, lng) {
 
@@ -738,7 +998,7 @@
     }
 
     $(document).ready(function () {
-        makeMarker(cmtinfoLatLng.getLat(), cmtinfoLatLng.getLng())
+        makeMarker2()
     });
 
 

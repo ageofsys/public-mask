@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Clients;
+namespace App\PublicMask\Api\Clients;
 
 
 use Illuminate\Support\Facades\Http;
@@ -10,10 +10,16 @@ class SimpleClient
 {
     public function send($url, $method = "get")
     {
-        $response = Http::get($url);
+        $response = Http::retry(3, 60);
+
+        $response = $response->get($url);
 
         if ($method == "post") {
-            $response = Http::post($url);
+            $response = $response->post($url);
+        }
+
+        if ($response->clientError() || $response->serverError()) {
+            var_dump("네트워킹 오류 발생");
         }
 
         return $response->json();
