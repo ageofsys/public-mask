@@ -71,23 +71,52 @@
             z-index: 1;
         }
 
-        .store-sale-info-frame {
-            position: absolute;
-            top: 50px;
-            right: 10px;
-            overflow: hidden;
-            margin: 0;
-            padding: 0;
-            z-index: 1;
-            font-size: 12px;
-            max-height: 300px;
-            min-height: 100px;
-            width: 350px;
-            overflow-y: scroll;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            padding: 1rem;
+        @media (min-width: 992px) {
+            .store-sale-info-frame {
+                position: absolute;
+                top: 50px;
+                right: 10px;
+                overflow: hidden;
+                margin: 0;
+                padding: 0;
+                z-index: 1;
+                font-size: 12px;
+                max-height: 300px;
+                min-height: 100px;
+                width: 350px;
+                overflow-y: scroll;
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 1rem;
+            }
         }
+
+        @media (max-width: 992px) {
+            .store-sale-info-frame h3 {
+                font-size: 12px;
+            }
+            .store-sale-info-frame table {
+                margin-bottom: 0;
+            }
+            .store-sale-info-frame {
+                position: absolute;
+                top: 50px;
+                left: 10px;
+                right: 10px;
+                overflow: hidden;
+                margin: 0;
+                z-index: 1;
+                font-size: 9px;
+                max-height: 300px;
+                min-height: 100px;
+                overflow-y: scroll;
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: .5rem;
+            }
+        }
+
+
 
         .page-wrap {
             min-height: 100%;
@@ -300,7 +329,7 @@
             {{--            </ul>--}}
             {{--        </div>--}}
 
-            <div id="store-sale-info" class="store-sale-info-frame shadow-lg d-none d-lg-block d-xl-block">
+            <div id="store-sale-info" class="store-sale-info-frame shadow-lg">
                 <p class="no-result" v-if="storeSale.code == undefined">
                     <i class="fas fa-exclamation-triangle"></i> 판매처를 클릭하세요.
                 </p>
@@ -356,7 +385,7 @@
     <div class="d-lg-none d-xl-none mobile-bottom-wrap">
         <a class="btn btn-primary" href="{{ route("stores.index") }}" style="position: absolute; right: 0; bottom: 0">표로 검색하기</a>
 
-        <ul class="list-disc list-inside text-gray-600" style="font-size: 9px; float: left">
+        <ul class="list-inside text-gray-900" style="font-size: 9px; float: left">
             <li class="mb-2"><img class="inline" src="/image/pharmacy_plenty.png"> 100개 이상</li>
             <li class="mb-2"><img class="inline" src="/image/pharmacy_some.png"> 30개 이상 100개 미만</li>
             <li class="mb-2"><img class="inline" src="/image/pharmacy_few.png"> 2개 이상 30개 미만</li>
