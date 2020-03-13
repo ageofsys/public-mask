@@ -9,6 +9,7 @@ use App\MaskSyncLog;
 use App\PublicMask\Api\Result\SaleResult;
 use App\Repositories\PublicMaskApiRepository;
 use App\Sale;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
 class SaleSync
@@ -92,17 +93,23 @@ class SaleSync
 
     public function saveOne($sale)
     {
-        $sale->mask_sync_log_id = self::$maskSyncLog->id;
-        $sale->save();
+        try {
+            $sale->mask_sync_log_id = self::$maskSyncLog->id;
+            $sale->save();
 
-        $store = $sale->store;
-        if ($store) {
-            $store->stock_at = $sale->stock_at;
-            $store->remain_stat = $sale->remain_stat;
-            $store->created_at = $sale->created_at;
+            $store = $sale->store;
+            if ($store) {
+                $store->stock_at = $sale->stock_at;
+                $store->remain_stat = $sale->remain_stat;
+                $store->created_at = $sale->created_at;
 
-            $store->save();
+                $store->save();
+            }
+        } catch (QueryException $exception) {
+
         }
+
+
 
 
 //        $filtered = $this->localSales->filter(function ($localSale, $key) use ($sale) {
