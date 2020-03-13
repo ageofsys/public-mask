@@ -166,6 +166,19 @@
         .is-hide{
             display:none;
         }
+
+
+        @media (min-width: 992px) {
+
+        }
+
+        .mobile-bottom-wrap {
+            position: absolute;
+            bottom: 50px;
+            left: 10px;
+            right: 10px;
+            z-index: 1
+        }
     </style>
 
     <script src="https://kit.fontawesome.com/7cec4e236d.js" crossorigin="anonymous"></script>
@@ -344,14 +357,18 @@
         </div>
     </div>
 
-    <a class="btn btn-primary d-lg-none d-xl-none" href="{{ route("stores.index") }}" style="position: absolute; bottom: 10px; right: 10px; z-index: 1">표로 검색하기</a>
+    <div class="d-lg-none d-xl-none mobile-bottom-wrap">
+        <a class="btn btn-primary" href="{{ route("stores.index") }}" style="position: absolute; right: 0; bottom: 0">표로 검색하기</a>
 
-    <ul class="list-disc list-inside text-gray-600" style="position: absolute; bottom: 10px; left: 10px; z-index: 1; font-size: 9px">
-        <li class="mb-2"><img class="inline" src="/image/pharmacy_plenty.png"> 100개 이상</li>
-        <li class="mb-2"><img class="inline" src="/image/pharmacy_some.png"> 30개 이상 100개 미만</li>
-        <li class="mb-2"><img class="inline" src="/image/pharmacy_few.png"> 2개 이상 30개 미만</li>
-        <li class="mb-2"><img class="inline" src="/image/pharmacy_empty.png"> 1개 이하</li>
-    </ul>
+        <ul class="list-disc list-inside text-gray-600" style="font-size: 9px; float: left">
+            <li class="mb-2"><img class="inline" src="/image/pharmacy_plenty.png"> 100개 이상</li>
+            <li class="mb-2"><img class="inline" src="/image/pharmacy_some.png"> 30개 이상 100개 미만</li>
+            <li class="mb-2"><img class="inline" src="/image/pharmacy_few.png"> 2개 이상 30개 미만</li>
+            <li class="mb-2"><img class="inline" src="/image/pharmacy_empty.png"> 1개 이하</li>
+        </ul>
+    </div>
+
+
 
 </div>
 
