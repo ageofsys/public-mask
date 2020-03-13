@@ -96,11 +96,14 @@ class SaleSync
         $sale->save();
 
         $store = $sale->store;
-        $store->stock_at = $sale->stock_at;
-        $store->remain_stat = $sale->remain_stat;
-        $store->created_at = $sale->created_at;
+        if ($store) {
+            $store->stock_at = $sale->stock_at;
+            $store->remain_stat = $sale->remain_stat;
+            $store->created_at = $sale->created_at;
 
-        $store->save();
+            $store->save();
+        }
+
 
 //        $filtered = $this->localSales->filter(function ($localSale, $key) use ($sale) {
 //            return $localSale->code == $sale->code;
