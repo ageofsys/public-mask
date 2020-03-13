@@ -8,6 +8,7 @@ use App\MaskSyncErrorLog;
 use App\MaskSyncLog;
 use App\PublicMask\Api\Result\SaleResult;
 use App\Repositories\PublicMaskApiRepository;
+use Illuminate\Support\Facades\DB;
 
 class SaleSync
 {
@@ -79,9 +80,10 @@ class SaleSync
 
     public function saveMany($sales)
     {
-        foreach ($sales as $sale) {
-            $this->saveOne($sale);
-        }
+        DB::table("sales")->insert($sales);
+//        foreach ($sales as $sale) {
+//            $this->saveOne($sale);
+//        }
     }
 
     public function saveOne($sale)

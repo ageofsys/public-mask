@@ -25,13 +25,6 @@ class SaleResult
         $this->page = $rawJson["page"];
         $this->count = $rawJson["count"];
 
-        echo "### " . $rawJson["page"] . " 페이지" . PHP_EOL;
-        echo "항목 갯수 (count) : " . count($rawJson["sales"]) . PHP_EOL;
-        echo "항목 갯수 : " . $rawJson["count"] . PHP_EOL;
-        echo "페이지 갯수 : " . $rawJson["totalPages"] . PHP_EOL;
-        echo "전체 갯수 : " . $rawJson["totalCount"] . PHP_EOL;
-
-
         $sales = [];
         foreach ($rawJson["sales"] as $saleJson) {
             $saleParser = new SaleParser($saleJson);
