@@ -69,6 +69,8 @@ class SaleSync
                 new MaskSyncErrorLog(["title" => $exception->getMessage(), "content" => "" ])
             );
 
+            dd($exception);
+
         }
 
 

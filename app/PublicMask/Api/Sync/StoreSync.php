@@ -69,6 +69,8 @@ class StoreSync
                 new MaskSyncErrorLog(["title" => $exception->getMessage(), "content" => "" ])
             );
 
+            dd($exception);
+
         }
 
 
