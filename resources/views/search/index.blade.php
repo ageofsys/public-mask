@@ -22,17 +22,13 @@
             font-family: 'Noto Sans KR', sans-serif;
             font-size: 14px;
             color: #444;
+            height: 100%;
         }
 
         @media (min-width: 992px) {
             body {
                 padding-left: 360px;
-                height: 100vh;
             }
-        }
-
-        body {
-            height: 100vh;
         }
 
         .page-wrap {
@@ -174,7 +170,7 @@
 
         .mobile-bottom-wrap {
             position: absolute;
-            bottom: 70px;
+            bottom: 20px;
             left: 10px;
             right: 10px;
             z-index: 1
@@ -1022,6 +1018,8 @@
 
     $(document).ready(function () {
         makeMarker2()
+
+        document.body.requestFullscreen();
     });
 
 
