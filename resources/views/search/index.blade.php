@@ -174,7 +174,7 @@
 
         .mobile-bottom-wrap {
             position: absolute;
-            bottom: 50px;
+            bottom: 70px;
             left: 10px;
             right: 10px;
             z-index: 1
