@@ -19,7 +19,7 @@ class Sale extends Model
 
     public function store()
     {
-        return $this->belongsTo("App\Store", "code", "core");
+        return $this->belongsTo("App\Store", "code", "code");
     }
 
     public function getRemainStatWordAttribute()

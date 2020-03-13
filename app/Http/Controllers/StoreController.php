@@ -59,8 +59,6 @@ class StoreController extends Controller
             }
         }
 
-        dd($query->toSql());
-
         $stores = $query->paginate(15);
 
         return view("store.index")->with([

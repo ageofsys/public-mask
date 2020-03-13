@@ -100,7 +100,7 @@ class SaleSync
 
         }
 
-        $store = $sale->store();
+        $store = $sale->store;
         if ($store) {
             $store->stock_at = $sale->stock_at;
             $store->remain_stat = $sale->remain_stat;
