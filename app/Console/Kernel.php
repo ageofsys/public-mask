@@ -2,6 +2,9 @@
 
 namespace App\Console;
 
+use App\PublicMask\Api\Clients\SimpleClient;
+use App\PublicMask\SaleSync;
+use App\Repositories\PublicMaskApiRepository;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,7 +27,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            $saleSync = new SaleSync(new PublicMaskApiRepository(new SimpleClient()));
+            $saleSync->sync();
+        })->hourly();
+
+//         $schedule->command('inspire')->hourly();
     }
 
     /**
