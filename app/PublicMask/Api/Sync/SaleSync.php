@@ -96,18 +96,20 @@ class SaleSync
         try {
             $sale->mask_sync_log_id = self::$maskSyncLog->id;
             $sale->save();
+
+            $store = $sale->store;
+            if ($store) {
+                $store->stock_at = $sale->stock_at;
+                $store->remain_stat = $sale->remain_stat;
+                $store->created_at = $sale->created_at;
+
+                $store->save();
+            }
         } catch (QueryException $exception) {
 
         }
 
-        $store = $sale->store;
-        if ($store) {
-            $store->stock_at = $sale->stock_at;
-            $store->remain_stat = $sale->remain_stat;
-            $store->created_at = $sale->created_at;
 
-            $store->save();
-        }
 
 
 
