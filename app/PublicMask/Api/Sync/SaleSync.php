@@ -95,6 +95,13 @@ class SaleSync
         $sale->mask_sync_log_id = self::$maskSyncLog->id;
         $sale->save();
 
+        $store = $sale->store;
+        $store->stock_at = $sale->stock_at;
+        $store->remain_stat = $sale->remain_stat;
+        $store->created_at = $sale->created_at;
+
+        $store->save();
+
 //        $filtered = $this->localSales->filter(function ($localSale, $key) use ($sale) {
 //            return $localSale->code == $sale->code;
 //        });

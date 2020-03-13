@@ -583,9 +583,6 @@
     kakao.maps.event.addListener(map, 'idle', function () {
 
         var bounds = map.getBounds();
-        // console.log("###################################");
-        // console.log(bounds.toString());
-        // console.log("###################################");
 
         // 지도의  레벨을 얻어옵니다
         var level = map.getLevel();

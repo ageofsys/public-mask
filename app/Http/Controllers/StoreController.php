@@ -41,9 +41,9 @@ class StoreController extends Controller
 
         if (isset($request->remain_stat) && in_array($request->remain_stat, ["plenty", "some", "few", "empty"])) {
 
-            $query->whereHas("sales", function ($query2) use ($request) {
-                $query2->where("remain_stat", "=", $request->remain_stat);
-            });
+//            $query->whereHas("sales", function ($query2) use ($request) {
+//                $query2->where("remain_stat", "=", $request->remain_stat);
+//            });
 
         }
 
@@ -58,6 +58,8 @@ class StoreController extends Controller
                 });
             }
         }
+
+        dd($query->toSql());
 
         $stores = $query->paginate(15);
 

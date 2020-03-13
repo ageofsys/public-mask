@@ -22,6 +22,9 @@ class CreateStoresTable extends Migration
             $table->float("lat", 10, 6)->nullable();
             $table->float("lng", 10, 6)->nullable();
             $table->integer('mask_sync_log_id');
+            $table->dateTime("stock_at")->nullable();
+            $table->string("remain_stat")->nullable();
+            $table->dateTime("created_at")->nullable();
 
             $table->unique("code");
         });
