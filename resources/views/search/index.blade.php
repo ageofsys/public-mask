@@ -169,7 +169,7 @@
         }
 
         .mobile-bottom-wrap {
-            position: absolute;
+            position: fixed;
             bottom: 20px;
             left: 10px;
             right: 10px;
