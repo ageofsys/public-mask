@@ -48,7 +48,7 @@ class StoreResult
                 StoreSync::$maskSyncLog->errors()->save(
                     new MaskSyncErrorLog([
                         "title" => $exception->getMessage(),
-                        "content" => collect($exception)->toJson()
+                        "content" => ""
                     ])
                 );
             } catch (\Exception $exception) {

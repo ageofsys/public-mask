@@ -66,7 +66,7 @@ class SaleSync
             self::$maskSyncLog->save();
 
             self::$maskSyncLog->errors()->save(
-                new MaskSyncErrorLog(["title" => $exception->getMessage(), "content" => collect($exception)->toJson() ])
+                new MaskSyncErrorLog(["title" => $exception->getMessage(), "content" => "" ])
             );
 
         }
