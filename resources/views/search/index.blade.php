@@ -228,7 +228,10 @@
                         <div class="input-group">
                             <input id="search-address-keyword" type="text" class="form-control" placeholder="주소를 검색하세요">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" id="search-address-btn"><i class="fas fa-search"></i></button>
+                                <button class="btn btn-outline-secondary" type="button" id="search-address-btn"
+                                        onclick="searchAddress(document.getElementById('search-address-keyword').value)">
+                                    <i class="fas fa-search"></i>
+                                </button>
                             </div>
                         </div>
                     </li>
@@ -416,10 +419,10 @@
             $("#overlay").fadeIn(300);
         });
 
-        $("#search-address-btn").click(function () {
-            var keyword = $("#search-address-keyword").val();
-            searchAddress(keyword);
-        })
+        // $("#search-address-btn").click(function () {
+        //     var keyword = $("#search-address-keyword").val();
+        //     searchAddress(keyword);
+        // });
 
         $("#search-address-btn-mobile").click(function () {
             var keyword = $("#search-address-keyword-mobile").val();
@@ -580,9 +583,9 @@
     kakao.maps.event.addListener(map, 'idle', function () {
 
         var bounds = map.getBounds();
-        console.log("###################################");
-        console.log(bounds.toString());
-        console.log("###################################");
+        // console.log("###################################");
+        // console.log(bounds.toString());
+        // console.log("###################################");
 
         // 지도의  레벨을 얻어옵니다
         var level = map.getLevel();
@@ -1046,9 +1049,7 @@
     }
 
     $(document).ready(function () {
-        makeMarker2()
-
-        document.body.requestFullscreen();
+        makeMarker2();
     });
 
 

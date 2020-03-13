@@ -11,10 +11,10 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item @if($routeName == "search.index" || $routeName == "welcome") active @endif">
+                <li class="nav-item @if($routeName == "search.index") active @endif">
                     <a class="nav-link" href="{{ route("search.index") }}">지도로 검색</a>
                 </li>
-                <li class="nav-item @if($routeName == "stores.index") active @endif">
+                <li class="nav-item @if($routeName == "stores.index" || $routeName == "welcome") active @endif">
                     <a class="nav-link" href="{{ route("stores.index") }}">표로 검색</a>
                 </li>
             </ul>

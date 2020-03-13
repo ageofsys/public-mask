@@ -8,6 +8,7 @@ use App\MaskSyncErrorLog;
 use App\MaskSyncLog;
 use App\PublicMask\Api\Result\SaleResult;
 use App\Repositories\PublicMaskApiRepository;
+use App\Sale;
 use Illuminate\Support\Facades\DB;
 
 class SaleSync
@@ -16,9 +17,13 @@ class SaleSync
 
     public static $maskSyncLog;
 
+    public $localSales;
+
     public function __construct(PublicMaskApiRepository $publicMaskApiRepository)
     {
         $this->repository = $publicMaskApiRepository;
+
+//        $this->localSales = Sale::all();
     }
 
     public function sync()
@@ -89,6 +94,25 @@ class SaleSync
     {
         $sale->mask_sync_log_id = self::$maskSyncLog->id;
         $sale->save();
-//        self::$maskSyncLog->sale()->save($sale);
+
+//        $filtered = $this->localSales->filter(function ($localSale, $key) use ($sale) {
+//            return $localSale->code == $sale->code;
+//        });
+//
+//        // 일치하는게 없다면 INSERT
+//        if ($filtered->isEmpty()) {
+//            $sale->mask_sync_log_id = self::$maskSyncLog->id;
+//            $sale->save();
+//        } else {
+//
+//            foreach ($filtered as $key => $localSale) {
+//                if ($localSale->created_at < $sale->created_at) {
+//                    $sale->mask_sync_log_id = self::$maskSyncLog->id;
+//                    $sale->save();
+//                }
+//            }
+//
+//        }
+
     }
 }

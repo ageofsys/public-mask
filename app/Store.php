@@ -25,7 +25,7 @@ class Store extends Model
 
     public function sales()
     {
-        return $this->hasMany("App\Sale", "code", "code");
+        return $this->hasMany("App\Sale", "code", "code")->orderBy("created_at", "desc");
     }
 
     public function latestSale()
