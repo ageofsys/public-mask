@@ -80,14 +80,15 @@ class SaleSync
 
     public function saveMany($sales)
     {
-        DB::table("sales")->insert($sales);
-//        foreach ($sales as $sale) {
-//            $this->saveOne($sale);
-//        }
+        foreach ($sales as $sale) {
+            $this->saveOne($sale);
+        }
     }
 
     public function saveOne($sale)
     {
-        self::$maskSyncLog->sale()->save($sale);
+        $sale->mask_sync_log_id = self::$maskSyncLog->id;
+        $sale->save();
+//        self::$maskSyncLog->sale()->save($sale);
     }
 }
