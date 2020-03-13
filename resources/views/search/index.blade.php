@@ -93,6 +93,10 @@
             padding: 1rem;
         }
 
+        .page-wrap {
+            min-height: 100%;
+        }
+
         .map_wrap {
             position: relative;
             overflow: hidden;
@@ -193,15 +197,15 @@
                     @php
                     $routeName = Route::currentRouteName();
                     @endphp
-                    <li class="list-group-item @if($routeName == "search.index" || $routeName == "welcome") active @endif">
-                        <a class="nav-link pl-0" href="{{ route("search.index") }}">주소로 검색하기</a>
-                    </li>
+{{--                    <li class="list-group-item @if($routeName == "search.index" || $routeName == "welcome") active @endif">--}}
+{{--                        <a class="nav-link pl-0" href="{{ route("search.index") }}">주소로 검색하기</a>--}}
+{{--                    </li>--}}
                     <li class="list-group-item @if($routeName == "stores.index") active @endif">
-                        <a class="nav-link pl-0" href="{{ route("stores.index") }}">판매처 데이터베이스</a>
+                        <a class="nav-link pl-0" href="{{ route("stores.index") }}">표로 검색하기</a>
                     </li>
-                    <li class="list-group-item @if($routeName == "sales.index") active @endif">
-                        <a class="nav-link pl-0" href="{{ route("sales.index") }}">판매 데이터베이스</a>
-                    </li>
+{{--                    <li class="list-group-item @if($routeName == "sales.index") active @endif">--}}
+{{--                        <a class="nav-link pl-0" href="{{ route("sales.index") }}">판매 데이터베이스</a>--}}
+{{--                    </li>--}}
                 </ul>
 
                 <div class="p-3 mt-5">
@@ -271,14 +275,7 @@
             </div>
 
 
-            <a class="btn btn-primary d-lg-none d-xl-none" href="{{ route("stores.index") }}" style="position: absolute; bottom: 10px; right: 10px; z-index: 1">표로 검색하기</a>
 
-            <ul class="list-disc list-inside text-gray-600" style="position: absolute; bottom: 10px; left: 10px; z-index: 1; font-size: 9px">
-                <li class="mb-2"><img class="inline" src="/image/pharmacy_plenty.png"> 100개 이상</li>
-                <li class="mb-2"><img class="inline" src="/image/pharmacy_some.png"> 30개 이상 100개 미만</li>
-                <li class="mb-2"><img class="inline" src="/image/pharmacy_few.png"> 2개 이상 30개 미만</li>
-                <li class="mb-2"><img class="inline" src="/image/pharmacy_empty.png"> 1개 이하</li>
-            </ul>
 
 
             {{--        <div id="store-list" class="store-list-frame">--}}
@@ -346,6 +343,15 @@
 
         </div>
     </div>
+
+    <a class="btn btn-primary d-lg-none d-xl-none" href="{{ route("stores.index") }}" style="position: absolute; bottom: 10px; right: 10px; z-index: 1">표로 검색하기</a>
+
+    <ul class="list-disc list-inside text-gray-600" style="position: absolute; bottom: 10px; left: 10px; z-index: 1; font-size: 9px">
+        <li class="mb-2"><img class="inline" src="/image/pharmacy_plenty.png"> 100개 이상</li>
+        <li class="mb-2"><img class="inline" src="/image/pharmacy_some.png"> 30개 이상 100개 미만</li>
+        <li class="mb-2"><img class="inline" src="/image/pharmacy_few.png"> 2개 이상 30개 미만</li>
+        <li class="mb-2"><img class="inline" src="/image/pharmacy_empty.png"> 1개 이하</li>
+    </ul>
 
 </div>
 

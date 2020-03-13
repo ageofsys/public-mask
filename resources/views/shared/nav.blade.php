@@ -15,7 +15,7 @@
                     <a class="nav-link" href="{{ route("search.index") }}">지도로 검색</a>
                 </li>
                 <li class="nav-item @if($routeName == "stores.index") active @endif">
-                    <a class="nav-link" href="{{ route("stores.index") }}">테이블로 검색</a>
+                    <a class="nav-link" href="{{ route("stores.index") }}">표로 검색</a>
                 </li>
             </ul>
         </div>

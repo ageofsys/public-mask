@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', "SearchController@index")->name("welcome");
+Route::get('/', "StoreController@index")->name("welcome");
 
 Route::resource("stores", "StoreController");
 
