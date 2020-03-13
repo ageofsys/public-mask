@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '공공 마스크 현황')
+@section('title', '공적 마스크 현황')
 
 @section('content')
     <h1 class="h1 pb-3 mb-3 border-b"><i class="fas fa-database text-gray-700"></i> 마스크 재고현황</h1>
