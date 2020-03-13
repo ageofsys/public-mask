@@ -27,15 +27,15 @@ class SearchController extends Controller
         $stores = Store::query()->whereBetween("lat", [$swLatLng->getLat(), $enLatLng->getLat()])
             ->whereBetween("lng", [$swLatLng->getLng(), $enLatLng->getLng()])->get();
 
-        foreach ($stores as $store) {
-            $latestSale = isset($store->sales[0]) ? $store->sales[0] : null;
-
-            if ( ! $latestSale) continue;
-
-            $store->stock_at = $latestSale->stock_at;
-            $store->remain_stat = $latestSale->remain_stat;
-            $store->created_at = $latestSale->created_at;
-        }
+//        foreach ($stores as $store) {
+//            $latestSale = isset($store->sales[0]) ? $store->sales[0] : null;
+//
+//            if ( ! $latestSale) continue;
+//
+//            $store->stock_at = $latestSale->stock_at;
+//            $store->remain_stat = $latestSale->remain_stat;
+//            $store->created_at = $latestSale->created_at;
+//        }
 
         return response()->json(["stores" => $stores]);
 
