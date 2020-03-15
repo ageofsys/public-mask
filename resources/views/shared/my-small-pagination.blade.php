@@ -1,7 +1,7 @@
 @if ($paginator->hasPages())
 
     <nav>
-        <ul class="pagination justify-content-center text-body">
+        <ul class="pagination justify-content-center text-body" style="font-size: 12px">
 
             {{-- Pagination Elements --}}
             @foreach ($elements as $element)
