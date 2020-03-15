@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\PublicMask\Api\Clients\SimpleClient;
 use App\Repositories\PublicMaskApiRepository;
 use App\Store;
+use App\MaskSyncLog;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 
@@ -54,13 +55,16 @@ class StoreController extends Controller
                     $query2->orWhere("addr", "like", "%$keyword%");
                 });
             }
-        }
+	}
+
+	$latestMaskSyncLog = MaskSyncLog::where("succeed", "=", 1)->orderBy("created_at", "desc")->first();
 
         $stores = $query->paginate(15);
 
         return view("store.index")->with([
             "stores" => $stores,
-            "parameters" => $parameters
+	    "parameters" => $parameters,
+	    "latestMaskSyncLog" => $latestMaskSyncLog,
         ]);
     }
 

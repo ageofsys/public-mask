@@ -54,6 +54,10 @@
         </div>
     </form>
 
+    <div>
+        <p class="text-right mb-3">업데이트 일시: {{ date("m월 d일 H시 i분", strtotime($latestMaskSyncLog->sync_ended_at)) }}</p>
+    </div>
+
     <table class="table border-b table-hover">
         <thead>
         <tr>
@@ -100,12 +104,13 @@
                         <th style="width: 200px">재고상태</th>
                         <th class="d-none d-lg-block d-xl-block">생성일</th>
                     </tr>
-                    @foreach($store->sales as $sale)
+                    @foreach($store->sales as $sale) 
                     <tr>
                         <td>{{ $sale->stockAtWord }}</td>
-                        <td>{{ $sale->remainStatWord }}</td>
-                        <td class="d-none d-lg-block d-xl-block">{{ $sale->createdAtWord }}</td>
-                    </tr>
+			<td>{{ $sale->remainStatWord }}</td>
+			<td class="d-none d-lg-block d-xl-block">{{ $sale->createdAtWord }}</td>
+                        @break($loop->index == 4)
+		    </tr>
                     @endforeach
                 </table>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\PublicMask\LatLng;
 use App\Store;
+use App\MaskSyncLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -11,7 +12,9 @@ class SearchController extends Controller
 {
     public function index()
     {
-        return view("search.index");
+        $latestMaskSyncLog = MaskSyncLog::where("succeed", "=", 1)->orderBy("created_at", "desc")->first();
+
+	return view("search.index")->with("latestMaskSyncLog", $latestMaskSyncLog);
     }
 
     public function searchOnMap(Request $request)
@@ -36,8 +39,9 @@ class SearchController extends Controller
 //            $store->remain_stat = $latestSale->remain_stat;
 //            $store->created_at = $latestSale->created_at;
 //        }
+        $latestMaskSyncLog = MaskSyncLog::where("succeed", "=", 1)->orderBy("created_at", "desc")->first();
 
-        return response()->json(["stores" => $stores]);
+        return response()->json(["stores" => $stores, "latestMaskSyncLog" => $latestMaskSyncLog]);
 
 
     }

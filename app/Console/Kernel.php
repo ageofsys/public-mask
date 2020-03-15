@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $saleSync = new SaleSync(new PublicMaskApiRepository(new SimpleClient()));
             $saleSync->sync();
-        })->hourly();
+        })->everyFifteenMinutes();
 
 //         $schedule->command('inspire')->hourly();
     }

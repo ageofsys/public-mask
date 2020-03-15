@@ -334,12 +334,14 @@
 
             <div id="store-sale-info" class="store-sale-info-frame shadow-lg">
                 <p class="no-result" v-if="storeSale.code == undefined">
-                    <i class="fas fa-exclamation-triangle"></i> 판매처를 클릭하세요.
+		    <i class="fas fa-exclamation-triangle"></i> 판매처를 클릭하세요.
+		    
+                    <span class="block mt-2">업데이트 일시: {{ date("m월 d일 H시 i분", strtotime($latestMaskSyncLog->sync_ended_at)) }}</span>
                 </p>
                 <div v-else>
                     <h3 class="h3 mb-3 text-gray-600"><i class="far fa-sticky-note"></i> 판매처 마스크 현황</h3>
                     <table class="table table-sm table-hover">
-                        <tbody>
+			<tbody>
                         <tr>
                             <th style="width: 65px;" class="text-gray-600" scope="row">판매처명</th>
                             <td>@{{ storeSale.name }}</td>
@@ -375,6 +377,12 @@
                                 <span v-else>
                                     @{{ storeSale.addr }}
                                 </span>
+                            </td>
+			</tr>
+                        <tr>
+                            <th class="text-gray-600">업데이트</th>
+                            <td>
+                                {{ date("m월 d일 H시 i분", strtotime($latestMaskSyncLog->sync_ended_at)) }}
                             </td>
                         </tr>
                         </tbody>
