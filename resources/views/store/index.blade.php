@@ -100,17 +100,17 @@
 
                 <table class="table ">
                     <tr>
-                        <th style="width: 200px">입고시간</th>
+                        <th>생성일</th>
                         <th style="width: 200px">재고상태</th>
-                        <th class="d-none d-lg-block d-xl-block">생성일</th>
+                        <th class="d-none d-lg-block d-xl-block" style="width: 200px">입고시간</th>
                     </tr>
-                    @foreach($store->sales as $sale) 
+                    @foreach($store->sales as $sale)
                     <tr>
-                        <td>{{ $sale->stockAtWord }}</td>
-			<td>{{ $sale->remainStatWord }}</td>
-			<td class="d-none d-lg-block d-xl-block">{{ $sale->createdAtWord }}</td>
+                        <td>{{ $sale->createdAtWord }}</td>
+                        <td>{{ $sale->remainStatWord }}</td>
+                        <td class="d-none d-lg-block d-xl-block">{{ $sale->stockAtWord }}</td>
                         @break($loop->index == 4)
-		    </tr>
+		            </tr>
                     @endforeach
                 </table>
 
