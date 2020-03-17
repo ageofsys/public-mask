@@ -27,7 +27,7 @@
 
         @media (min-width: 992px) {
             body {
-                padding-left: 360px;
+                /* padding-left: 360px; */
             }
         }
 
@@ -71,6 +71,40 @@
             z-index: 1;
         }
 
+        .store-sale-info-frame {
+            border-width: 5px;
+            border-style: solid;
+            border-color: #6c757d;
+        }
+        .store-sale-info-frame.plenty {
+            border-color: #28a745;
+        }
+        .store-sale-info-frame.some {
+            border-color: #ffc107;
+        }
+        .store-sale-info-frame.few {
+            border-color: #dc3545;
+        }
+        .store-sale-info-frame.empty {
+            border-color: #6c757d;
+        }
+
+        .store-sale-info_bg {
+            background-color: #6c757d;
+        }
+        .store-sale-info-frame.plenty .store-sale-info_bg {
+            background-color: #28a745;
+        }
+        .store-sale-info-frame.some .store-sale-info_bg {
+            background-color: #ffc107;
+        }
+        .store-sale-info-frame.few .store-sale-info_bg {
+            background-color: #dc3545;
+        }
+        .store-sale-info-frame.empty .store-sale-info_bg {
+            background-color: #6c757d;
+        }
+
         @media (min-width: 992px) {
             .store-sale-info-frame {
                 position: absolute;
@@ -86,12 +120,15 @@
                 width: 350px;
                 overflow-y: scroll;
                 background-color: #fff;
-                border: 1px solid #ccc;
-                padding: 1rem;
+                /* border: 1px solid #ccc; */
+                /* padding: 1rem; */
             }
         }
 
         @media (max-width: 992px) {
+            .left-area-wrap {
+                /* display: none; */
+            }
             .store-sale-info-frame h3 {
                 font-size: 12px;
             }
@@ -111,8 +148,8 @@
                 min-height: 100px;
                 overflow-y: scroll;
                 background-color: #fff;
-                border: 1px solid #ccc;
-                padding: .5rem;
+                /* border: 1px solid #ccc;
+                padding: .5rem; */
             }
         }
 
@@ -197,10 +234,9 @@
 
         }
 
-        .mobile-bottom-wrap {
-            position: fixed;
-            bottom: 20px;
-            left: 10px;
+        .legend-wrap {
+            position: absolute;
+            bottom: 10px;
             right: 10px;
             z-index: 1
         }
@@ -216,196 +252,206 @@
     </div>
 </div>
 
-<div class="page-wrap">
 
-    <div class="left-menu-wrap border-r shadow-lg d-none d-lg-block d-xl-block">
+<div class="container-fluid h-100">
+    <div class="row bg-light border-b">
+        <div class="col p-0">
+            <div class="container p-0">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/">공적 마스크 판매처별 현황</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
-        <div class="row" style="height: 100%">
-            <div class="col" style="height: 100%">
-
-                <ul class="list-group list-group-flush shadow">
-                    <li class="list-group-item bg-gray-100">
-                        <div class="input-group">
-                            <input id="search-address-keyword" type="text" class="form-control" placeholder="주소를 검색하세요">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" id="search-address-btn"
-                                        onclick="searchAddress(document.getElementById('search-address-keyword').value)">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </li>
-                    @php
-                    $routeName = Route::currentRouteName();
-                    @endphp
-{{--                    <li class="list-group-item @if($routeName == "search.index" || $routeName == "welcome") active @endif">--}}
-{{--                        <a class="nav-link pl-0" href="{{ route("search.index") }}">주소로 검색하기</a>--}}
-{{--                    </li>--}}
-                    <li class="list-group-item @if($routeName == "stores.index") active @endif">
-                        <a class="nav-link pl-0" href="{{ route("stores.index") }}">표로 검색하기</a>
-                    </li>
-{{--                    <li class="list-group-item @if($routeName == "sales.index") active @endif">--}}
-{{--                        <a class="nav-link pl-0" href="{{ route("sales.index") }}">판매 데이터베이스</a>--}}
-{{--                    </li>--}}
-                </ul>
-
-                <div class="p-3 mt-5">
-                    <h3 class="mb-3"><i class="fas fa-clipboard-check"></i> 마크 정보</h3>
-                    <ul class="list-disc list-inside mb-5 text-gray-600">
-                        <li class="mb-2"><img class="inline" src="/image/pharmacy_plenty.png"> 약국, <img class="inline" src="/image/post_plenty.png"> 우체국, <img class="inline" src="/image/agricultural_plenty.png"> 농협으로 표시됩니다.</li>
-                        <li class="mb-2"><img class="inline" src="/image/pharmacy_plenty.png"> 녹색은 100개 이상</li>
-                        <li class="mb-2"><img class="inline" src="/image/pharmacy_some.png"> 노란색은 30개 이상 100개미만</li>
-                        <li class="mb-2"><img class="inline" src="/image/pharmacy_few.png"> 빨간색은 2개 이상 30개 미만</li>
-                        <li class="mb-2"><img class="inline" src="/image/pharmacy_empty.png"> 회색은 1개 이하</li>
-                    </ul>
-
-                    <h3 class="mb-3"><i class="fas fa-clipboard-check"></i> 서비스 정보</h3>
-                    <ul class="list-disc list-inside mb-5 text-gray-600">
-                        <li class="mb-2">서비스되는 재고 현황 정보는 실제 현장 판매처의 현황과 5분~10분 정도의 차이가 있을 수 있습니다.</li>
-                        <li class="mb-2">번호표 배부 후 판매하는 일부 약국의 마스크 현황 정보는 오차가 있을 수 있습니다.</li>
-                        <li class="mb-2">마스크 현황 정보는 성인용 마스크를 대상으로 합니다.</li>
-                        <li class="mb-2">데이터 출처는 심평원 정보화진흥원(공공데이터포털) 입니다.</li>
-                    </ul>
-
-{{--                    <h3 class="mb-3"><i class="fas fa-clipboard-check"></i> 유용한 링크</h3>--}}
-{{--                    <ul class="list-disc list-inside mb-5 text-gray-600">--}}
-{{--                        <li><a target="_blank" href="http://www.mohw.go.kr/react/index.jsp">보건복지부 <i class="fas fa-external-link-alt"></i></a></li>--}}
-{{--                        <li><a target="_blank" href="https://www.data.go.kr/">공공데이터포털 <i class="fas fa-external-link-alt"></i></a></li>--}}
-{{--                        <li><a target="_blank" href="http://blog.naver.com/kfdazzang/221839489769">식약처 공적마스크 구매 안내 <i class="fas fa-external-link-alt"></i></a></li>--}}
-{{--                    </ul>--}}
-
-                    <h3 class="mb-3"><i class="fas fa-clipboard-check"></i> 감사의 말</h3>
-                    <ul class="list-disc list-inside mb-5 text-gray-600">
-                        <li>어려운 환경에서도 일선에서 공헌해 주시고 계신 모든 분들에게 감사의 말씀을 전합니다. 감사합니다.</li>
-                    </ul>
-
-                    <h3 class="mb-3"><i class="fas fa-code"></i> 개발: ageofsys@gmail.com</h3>
-
-                </div>
-
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item @if($routeName == "search.index") active @endif">
+                                <a class="nav-link" href="{{ route("search.index") }}">지도로 검색</a>
+                            </li>
+                            <li class="nav-item @if($routeName == "stores.index" || $routeName == "welcome") active @endif">
+                                <a class="nav-link" href="{{ route("stores.index") }}">표로 검색</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
             </div>
         </div>
-
     </div>
-
-    <div class="map-wrap">
-        <div class="map_wrap">
-            <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
-
-            <div id="search-address" class="search-address-frame">
-                <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
-            </div>
-
-            <!-- 지도타입 컨트롤 div 입니다 -->
-            <div class="custom_typecontrol radius_border d-none d-lg-block d-xl-block">
-                <button type="button" class="btn btn-primary btn-sm shadow-lg" onclick="setMapType('roadmap')">지도</button>
-                <button type="button" class="btn btn-secondary btn-sm shadow-lg" onclick="setMapType('skyview')">스카이뷰</button>
-            </div>
-
-            <div class="custom_typecontrol radius_border d-lg-none d-xl-none" style="left: 10px; background-color: #fff">
-                <div class="input-group">
-                    <input id="search-address-keyword-mobile" type="text" class="form-control" placeholder="주소를 검색하세요">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" id="search-address-btn-mobile"><i class="fas fa-search"></i></button>
+    <div class="row h-100" style="padding-top: 50px; margin-top: -50px;">
+        <div class="left-area-wrap h-100 col-lg-3 col-xl-2 border-r d-none d-lg-block">
+            <div class="row bg-light border-b" style="height: 60px;">
+                <div class="col mt-3 mb-3 input-group">
+                    <input id="search-address-keyword" type="text" class="form-control" placeholder="주소를 검색하세요">
+                    <div class="input-group-append bg-light">
+                        <button class="btn btn-outline-secondary" type="button" id="search-address-btn"><i class="fas fa-search" aria-hidden="true"></i></button>
                     </div>
                 </div>
             </div>
-
-            <div id="search-address-mobile" class="search-address-frame-mobile">
-                <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
-            </div>
-
-
-
-
-
-            {{--        <div id="store-list" class="store-list-frame">--}}
-            {{--            <p class="no-result" v-if="stores.length == 0">--}}
-            {{--                검색된 판매처가 없습니다.--}}
-            {{--            </p>--}}
-            {{--            <ul class="list-group list-group-flush" v-else>--}}
-            {{--                <li class="list-group-item" v-for="(store, index) in stores">--}}
-            {{--                    <a class="" v-on:click="selectStore(store)">@{{ store.name }}</a>--}}
-            {{--                    <br>--}}
-            {{--                    @{{ store.remain_stat }} / @{{ store.stock_at }} / @{{ store.type }}--}}
-            {{--                </li>--}}
-            {{--            </ul>--}}
-            {{--        </div>--}}
-
-            <div id="store-sale-info" class="store-sale-info-frame shadow-lg">
-                <p class="no-result" v-if="storeSale.code == undefined">
-		    <i class="fas fa-exclamation-triangle"></i> 판매처를 클릭하세요.
-		    
-                    <span class="block mt-2">업데이트 일시: {{ date("m월 d일 H시 i분", strtotime($latestMaskSyncLog->sync_ended_at)) }}</span>
-                </p>
-                <div v-else>
-                    <h3 class="h3 mb-3 text-gray-600"><i class="far fa-sticky-note"></i> 판매처 마스크 현황</h3>
-                    <table class="table table-sm table-hover">
-			<tbody>
-                        <tr>
-                            <th style="width: 65px;" class="text-gray-600" scope="row">판매처명</th>
-                            <td>@{{ storeSale.name }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-gray-600">재고수준</th>
-                            <td>
-                                <span class="text-gray-500" v-if="_.isEmpty(remainStatWord)">
-                                    정보가 없습니다.
-                                </span>
-                                <span v-else>
-                                    @{{ remainStatWord }}
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-gray-600">입고일</th>
-                            <td>
-                                <span class="text-gray-500" v-if="_.isEmpty(storeSale.stock_at)">
-                                    정보가 없습니다.
-                                </span>
-                                <span v-else>
-                                    @{{ storeSale.stock_at }}
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-gray-600">주소</th>
-                            <td>
-                                <span class="text-gray-500" v-if="_.isEmpty(storeSale.addr)">
-                                    정보가 없습니다.
-                                </span>
-                                <span v-else>
-                                    @{{ storeSale.addr }}
-                                </span>
-                            </td>
-			</tr>
-                        <tr>
-                            <th class="text-gray-600">업데이트</th>
-                            <td>
-                                {{ date("m월 d일 H시 i분", strtotime($latestMaskSyncLog->sync_ended_at)) }}
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+            <div class="row h-100" style="margin-top: -60px; padding-top: 60px;">
+                <div class="col h-100" style="overflow: auto;">
+                    <!-- 검색 전 -->
+                    <div class="pt-3">
+                        <h3 class="mb-3"><i class="fas fa-clipboard-check"></i> 서비스 정보</h3>
+                        <ul class="list-disc list-inside mb-5 text-gray-600">
+                            <li class="mb-2">서비스되는 재고 현황 정보는 실제 현장 판매처의 현황과 5분~10분 정도의 차이가 있을 수 있습니다.</li>
+                            <li class="mb-2">번호표 배부 후 판매하는 일부 약국의 마스크 현황 정보는 오차가 있을 수 있습니다.</li>
+                            <li class="mb-2">마스크 현황 정보는 성인용 마스크를 대상으로 합니다.</li>
+                            <li class="mb-2">데이터 출처는 심평원 정보화진흥원(공공데이터포털) 입니다.</li>
+                        </ul>
+                        <h3 class="mb-3"><i class="fas fa-clipboard-check"></i> 감사의 말</h3>
+                        <ul class="list-disc list-inside mb-5 text-gray-600">
+                            <li>어려운 환경에서도 일선에서 공헌해 주시고 계신 모든 분들에게 감사의 말씀을 전합니다. 감사합니다.</li>
+                        </ul>
+                        <h3 class="mb-3"><i class="fas fa-code"></i> 개발: ageofsys@gmail.com</h3>
+                    </div>
+                    <!-- 검색 후 -->
+                    <ul class="list-group list-group-flush">
+                        <!-- 검색 결과 없는 경우 -->
+                        <li class="list-group-item">
+                            <h6 class="h6 mb-1">일치하는 정보가 없습니다.</h6>
+                        </li>
+                        <!-- 검색 결과 -->
+                        <li class="list-group-item">
+                            <h6 class="h6 mb-1"><span class="remain-stat-plenty">●</span>율하수약국</h6>
+                            <address>대구광역시 동구 안심로 106, 1층 103호 (율하동, 메디원타워)</address>
+                        </li>
+                        <li class="list-group-item">
+                            <h6 class="h6 mb-1"><span class="remain-stat-some">●</span>율하수약국</h6>
+                            <address>대구광역시 동구 안심로 106, 1층 103호 (율하동, 메디원타워)</address>
+                        </li>
+                        <li class="list-group-item">
+                            <h6 class="h6 mb-1"><span class="remain-stat-empty">●</span>율하수약국</h6>
+                            <address>대구광역시 동구 안심로 106, 1층 103호 (율하동, 메디원타워)</address>
+                        </li>
+                        <li class="list-group-item">
+                            <h6 class="h6 mb-1"><span class="remain-stat-few">●</span>율하수약국</h6>
+                            <address>대구광역시 동구 안심로 106, 1층 103호 (율하동, 메디원타워)</address>
+                        </li>
+                        <li class="list-group-item">
+                            <h6 class="h6 mb-1"><span class="remain-stat-some">●</span>율하수약국</h6>
+                            <address>대구광역시 동구 안심로 106, 1층 103호 (율하동, 메디원타워)</address>
+                        </li>
+                        <li class="list-group-item">
+                            <h6 class="h6 mb-1"><span class="remain-stat-plenty">●</span>율하수약국</h6>
+                            <address>대구광역시 동구 안심로 106, 1층 103호 (율하동, 메디원타워)</address>
+                        </li>
+                        <li class="list-group-item">
+                            <h6 class="h6 mb-1"><span class="remain-stat-some">●</span>율하수약국</h6>
+                            <address>대구광역시 동구 안심로 106, 1층 103호 (율하동, 메디원타워)</address>
+                        </li>
+                        <li class="list-group-item">
+                            <h6 class="h6 mb-1"><span class="remain-stat-empty">●</span>율하수약국</h6>
+                            <address>대구광역시 동구 안심로 106, 1층 103호 (율하동, 메디원타워)</address>
+                        </li>
+                        <li class="list-group-item">
+                            <h6 class="h6 mb-1"><span class="remain-stat-few">●</span>율하수약국</h6>
+                            <address>대구광역시 동구 안심로 106, 1층 103호 (율하동, 메디원타워)</address>
+                        </li>
+                        <li class="list-group-item">
+                            <h6 class="h6 mb-1"><span class="remain-stat-some">●</span>율하수약국</h6>
+                            <address>대구광역시 동구 안심로 106, 1층 103호 (율하동, 메디원타워)</address>
+                        </li>
+                    </ul>
                 </div>
             </div>
+        </div>
+        <div class="col p-0 h-100">
+            <div class="map-wrap h-100">
+                <div class="map_wrap h-100">
+                    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
 
+                    <div id="search-address" class="search-address-frame">
+                        <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
+                    </div>
+
+                    <!-- 지도타입 컨트롤 div 입니다 -->
+                    <div class="custom_typecontrol radius_border d-none d-lg-block d-xl-block">
+                        <button type="button" class="btn btn-primary btn-sm shadow-lg" onclick="setMapType('roadmap')">지도</button>
+                        <button type="button" class="btn btn-secondary btn-sm shadow-lg" onclick="setMapType('skyview')">스카이뷰</button>
+                    </div>
+
+                    <div class="custom_typecontrol radius_border d-lg-none d-xl-none" style="left: 10px; background-color: #fff">
+                        <div class="input-group">
+                            <input id="search-address-keyword-mobile" type="text" class="form-control" placeholder="주소를 검색하세요">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" id="search-address-btn-mobile"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="search-address-mobile" class="search-address-frame-mobile">
+                        <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
+                    </div>
+
+                    <div id="store-sale-info2" class="store-sale-info-frame shadow-lg">
+                        <div class="no-result" v-if="storeSale.code == undefined">
+                            <h3 class="h3 text-white p-2 pl-3 pb-3 mb-0 store-sale-info_bg"><i class="far fa-sticky-note"></i> 판매처를 클릭하세요</h3>
+                            <p class="p-2 mb-1">
+                                <i class="fas fa-exclamation-triangle"></i> 정보가 없습니다.
+                            </p>
+                        </div>
+
+                        <div v-else>
+                            <h3 class="h3 text-white p-2 pl-3 pb-3 mb-0 store-sale-info_bg"><i class="far fa-sticky-note"></i> @{{ storeSale.name }}</h3>
+                            <p class="p-2 mb-1">
+                            <table class="table table-sm table-hover">
+                                <tbody>
+                                <tr>
+                                    <th style="width: 65px;" scope="row" class="text-gray-600">재고수준</th>
+                                    <td>
+                                                <span class="text-gray-500" v-if="_.isEmpty(remainStatWord)">
+                                                    정보가 없습니다.
+                                                </span>
+                                        <span v-else>
+                                                    @{{ remainStatWord }}
+                                                </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="text-gray-600">입고일</th>
+                                    <td>
+                                                <span class="text-gray-500" v-if="_.isEmpty(storeSale.stock_at)">
+                                                    정보가 없습니다.
+                                                </span>
+                                        <span v-else>
+                                                    @{{ storeSale.stock_at }}
+                                                </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="text-gray-600">주소</th>
+                                    <td>
+                                                <span class="text-gray-500" v-if="_.isEmpty(storeSale.addr)">
+                                                    정보가 없습니다.
+                                                </span>
+                                        <span v-else>
+                                                    @{{ storeSale.addr }}
+                                                </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-gray-600">업데이트</th>
+                                    <td>
+                                        {{ date("m월 d일 H시 i분", strtotime($latestMaskSyncLog->sync_ended_at)) }}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="legend-wrap bg-light p-2 border">
+                <ul class="list-inside text-gray-900" style="font-size: 9px; float: left">
+                    <li class="mb-1"><span class="remain-stat-plenty">●</span> 100개 이상</li>
+                    <li class="mb-1"><span class="remain-stat-some">●</span> 30개 이상 100개 미만</li>
+                    <li class="mb-1"><span class="remain-stat-few">●</span> 2개 이상 30개 미만</li>
+                    <li class="mb-1"><span class="remain-stat-empty">●</span> 1개 이하</li>
+                </ul>
+            </div>
         </div>
     </div>
-
-    <div class="d-lg-none d-xl-none mobile-bottom-wrap">
-        <a class="btn btn-primary" href="{{ route("stores.index") }}" style="position: absolute; right: 0; bottom: 0">표로 검색하기</a>
-
-        <ul class="list-inside text-gray-900" style="font-size: 9px; float: left">
-            <li class="mb-2"><img class="inline" src="/image/pharmacy_plenty.png"> 100개 이상</li>
-            <li class="mb-2"><img class="inline" src="/image/pharmacy_some.png"> 30개 이상 100개 미만</li>
-            <li class="mb-2"><img class="inline" src="/image/pharmacy_few.png"> 2개 이상 30개 미만</li>
-            <li class="mb-2"><img class="inline" src="/image/pharmacy_empty.png"> 1개 이하</li>
-        </ul>
-    </div>
-
-
-
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -740,12 +786,12 @@
 
                 }
             }).fail(function() {
-                alert( "통신이 지연되고 있습니다. 잠시 후 다시 시도해주세요" );
-            }).always(function () {
-                setTimeout(function(){
-                    $("#overlay").fadeOut(300);
-                },500);
-            });
+            alert( "통신이 지연되고 있습니다. 잠시 후 다시 시도해주세요" );
+        }).always(function () {
+            setTimeout(function(){
+                $("#overlay").fadeOut(300);
+            },500);
+        });
 
         // axios.get('https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json', {
         //     params: {
@@ -920,12 +966,12 @@
 
                 }
             }).fail(function() {
-                alert( "통신이 지연되고 있습니다. 잠시 후 다시 시도해주세요" );
-            }).always(function () {
-                setTimeout(function(){
-                    $("#overlay").fadeOut(300);
-                },500);
-            });
+            alert( "통신이 지연되고 있습니다. 잠시 후 다시 시도해주세요" );
+        }).always(function () {
+            setTimeout(function(){
+                $("#overlay").fadeOut(300);
+            },500);
+        });
 
         // axios.get('https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json', {
         //     params: {
