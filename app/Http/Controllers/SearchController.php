@@ -12,9 +12,11 @@ class SearchController extends Controller
 {
     public function index()
     {
+        $routeName = Route::currentRouteName();
+
         $latestMaskSyncLog = MaskSyncLog::where("succeed", "=", 1)->orderBy("created_at", "desc")->first();
 
-	return view("search.index")->with("latestMaskSyncLog", $latestMaskSyncLog);
+	    return view("search.index")->with("latestMaskSyncLog", $latestMaskSyncLog)->with("routeName", $routeName);
     }
 
     public function searchOnMap(Request $request)
